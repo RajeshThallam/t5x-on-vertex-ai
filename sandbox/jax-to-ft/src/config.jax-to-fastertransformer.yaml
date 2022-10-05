@@ -1,0 +1,21 @@
+
+baseOutputDirectory:
+    outputUriPrefix: gs://cloud-ai-platform-2f444b6a-a742-444b-b91a-c7519f51bd77/llm/jobs/ul2-jax-to-f/20221004-223602/
+workerPoolSpecs:
+  -
+    machineSpec:
+      machineType: a2-highgpu-1g 
+      acceleratorType: NVIDIA_TESLA_A100
+      acceleratorCount: 1
+    replicaCount: 1
+    diskSpec:
+      bootDiskType: pd-ssd
+      bootDiskSizeGb: 500
+    containerSpec:
+      imageUri: gcr.io/rthallam-demo-project/llms-on-vertex-ai/jax-to-fastertransformer
+      command:
+      - /bin/bash
+      - /run-converter-jax-to-fastertransformer.sh
+      - "gs://se-checkpoints/ul2-xsum"
+      - "gs://cloud-ai-platform-2f444b6a-a742-444b-b91a-c7519f51bd77/llm/models/ul2/ft/"
+
