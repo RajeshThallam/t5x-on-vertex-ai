@@ -65,8 +65,9 @@ mkdir -p $LOCAL_FT_CHECKPOINT
 # Run JAX to FasterTransformer 
 echo "[INFO] ${TIMESTAMP} Converting JAX checkpoint to FasterTransformer"
 SECONDS=0
-cd /FasterTransformer/build && \
-   python3 ../examples/pytorch/t5/utils/jax_t5_ckpt_convert.py \
+#cd /FasterTransformer/build && \
+#   python3 ../examples/pytorch/t5/utils/jax_t5_ckpt_convert.py \
+python3 /FasterTransformer/examples/tensorflow/t5/utils/jax_t5_ckpt_convert.py \
    $LOCAL_JAX_CHECKPOINT \
    $LOCAL_FT_CHECKPOINT \
    --tensor-parallelism $TENSOR_PARALLELISM
@@ -80,7 +81,7 @@ mv $LOCAL_FT_CHECKPOINT/1-gpu $LOCAL_FT_CHECKPOINT/ul2/1/
 
 # Format Triton config for UL2
 cp /triton/config.pbtxt $LOCAL_FT_CHECKPOINT/ul2/config.pbtxt
-sed -i -e 's!@@MODEL_CHECKPOINT_PATH@@!'$GCS_FT_CHECKPOINT'ul2/1/1-gpu!g' $LOCAL_FT_CHECKPOINT/ul2/config.pbtxt 
+# sed -i -e 's!@@MODEL_CHECKPOINT_PATH@@!'$GCS_FT_CHECKPOINT'ul2/1/1-gpu!g' $LOCAL_FT_CHECKPOINT/ul2/config.pbtxt 
 sed -i -e 's!@@TENSOR_PARA_SIZE@@!'$TENSOR_PARALLELISM'!g' $LOCAL_FT_CHECKPOINT/ul2/config.pbtxt 
 sed -i -e 's!@@PIPELINE_PARA_SIZE@@!'$TENSOR_PARALLELISM'!g;' $LOCAL_FT_CHECKPOINT/ul2/config.pbtxt 
 
